@@ -26,8 +26,8 @@ Obeying DIP (Dependency Inversion Principle):
 
   Here’s an example of the above:
 
+### Before Refactor
 ```ruby
-# Before
 class Product < ActiveRecord::Base
   has_many :purchases
 end
@@ -54,8 +54,10 @@ class Purchase < ActiveRecord::Base
     Stripe::Receipt.find(strip_order_id)
   end
 end
+```
 
-# After - Refactor with a Decorator
+### After - Refactor with a Decorator
+```ruby
 class Product < ActiveRecord::Base
   has_many :purchases
 end
