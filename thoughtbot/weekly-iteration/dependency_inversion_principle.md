@@ -27,6 +27,39 @@ Obeying DIP (Dependency Inversion Principle):
   Here’s an example of the above:
 
 ```ruby
+# Before
+class Product < ActiveRecord::Base
+  has_many :purchases
+end
+
+class Purchase < ActiveRecord::Base
+  belongs_to :product
+
+  # We don't want the receipt responsibilities in Purchase
+  def has_receipt?
+    receipt.present?
+  end
+
+  def receipt_id
+    receipt.id
+  end
+
+  def receipt_address
+    receipt.details.address
+  end
+
+  private
+
+  def receipt
+    Stripe::Receipt.find(strip_order_id)
+  end
+end
+
+# After - Refactor with a Decorator
+class Product < ActiveRecord::Base
+  has_many :purchases
+end
+
 class Purchase < ActiveRecord::Base
   belongs_to :product
 end
