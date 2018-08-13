@@ -1,0 +1,22 @@
+Best pracitce for Rabbit MQ
+
+Queues:
+
+- queue names should be named after what the consumer/worker will do with the messages on the queue.
+  - what is the intetn of the operation for this queue?
+    - example: sendNotification; the naming convention makes it easy to review or undestand what the purpose of the queue is.
+  - messages could have many different routing keys but the actions for the message can be shared.
+- do not name the queue after the binding, the routing key. 
+- keep queue names decoupled from the exchange and routing key of the message. 
+- make sure queues stay short. Longer queues impose more processing overhead. 
+- prefetch states that a queue will limit what it sends to a consumer based on an acknowledged message count. Once this count of unacknowledged messages are met, the queue stops sending messages. 
+- user a large prefetch count. Small values hurt performance; it forces queues to persist messages and grow in size. 
+
+Channel:
+
+- every channel in RabbitMQ is an Erlang process and so is every queue. 
+
+Exchange:
+
+- Topic:
+  - these types of exchanges are slower than direct or fanout.
