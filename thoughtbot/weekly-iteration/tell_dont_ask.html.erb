@@ -1,0 +1,10 @@
+<%-# Not so good -%>
+<% if current_user.admin? %>
+  <%= current_user.admin_welcome_message %>
+<% else %>
+  <%= current_user.user_welcome_message %>
+<% end%>
+
+
+<%-# Better -%>
+<%= current_user.welcome_message %>
