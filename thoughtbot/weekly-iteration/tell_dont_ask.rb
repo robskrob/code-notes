@@ -73,8 +73,20 @@ class NullAddress
 end
 
 # Violation of tell dont ask
+# This is a mixture of command and query methods on the same object, user.
+# 1
 if user.password.present?
   user.save!
 else
   user.errors.add :password, "can't be blank"
+end
+
+# 2
+# While this is a violation, this one is ok because this is the Rails API for generating a response.
+# Moreover in the conditional branches we are not doing something different to the user based on the result of the save.
+if @user.save
+  ConfirmationMailer.confirmation(@user).deliver
+  redirect_to root_url
+else
+  render 'new'
 end

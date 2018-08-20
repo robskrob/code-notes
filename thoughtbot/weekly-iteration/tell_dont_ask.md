@@ -136,5 +136,7 @@ end
 
 ### Violations
 * If you find yourself making conditional branches based on a method on an object and then inside each branch of the condition doing something different with that object **then you a re violating 'tell, don't ask'**
+* Mixing command and query methods for the same object. Instead handle decision trees internally -- in the command method and not outside it.
+
 
 ### Observance
