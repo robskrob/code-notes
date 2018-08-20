@@ -128,6 +128,29 @@ class NullAddress
 end
 ```
 
+### More examples
+
+```ruby
+# Violation of tell dont ask
+# This is a mixture of command and query methods on the same object, user.
+# 1
+if user.password.present?
+  user.save!
+else
+  user.errors.add :password, "can't be blank"
+end
+
+# 2
+# While this is a violation, this one is ok because this is the Rails API for generating a response.
+# Moreover in the conditional branches we are not doing something different to the user based on the result of the save.
+if @user.save
+  ConfirmationMailer.confirmation(@user).deliver
+  redirect_to root_url
+else
+  render 'new'
+end
+```
+
 ## Take Aways
 * Good OOP is about telling objects what you want done, not querying an object and acting on its behalf.
 * If you are doing something to yourself based on a question you ask a collaborating object -- that is fine. However, if you are doing something to the collaborating object based on a question you ask it then that a violation of 'Tell, don't ask'
