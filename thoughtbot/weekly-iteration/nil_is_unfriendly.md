@@ -74,6 +74,38 @@ Caveat: Exceptions are for exceptional situations -- something really bad has ha
 * Avoid invalid situations. `nil` represents an unexpected outcome.
 * Prevent hard-to-debug issues
 * When `nil` is unexpected
+* `NoMethodError`, `NameError`, `SyntaxError` -- You should never rescue these errors ever because it sounds like you have no idea what your code is doing. For example there is no reason why you should be calling methods that do not exist. This is a terrible way to catch exceptions:
+```ruby
+Account.find_each do |account|
+  begin
+    account.charge_for_subscription
+  rescue NoMethodError => exception
+    Airbrake.notify(exception)
+  end
+end
+```
+
+You should just let the above fail loudly and stop iterating through the loop.
+* Instead of rescueing `NoMethodError`, `NameError`, `SyntaxError` raise an explicit error `NoCreditCardError`. This exception is raised precisely where the problem occurs. Raising the exception precisely where the problem happens prevents the 'contagious' nil from getting out and spreading around your program. Moreover the continuation path of this program is better because the error is more specific -- because we know the reason for failure we can feel better about letting the program continue. Whereas if the program crashes because of a `NoMethodErrer` then it makes no sense for the program to continue because we have absolutely no idea why the problem is ocurring:
+
+```ruby
+class Account < ActiveRecord::Base
+  class NoCreditCardError < StandardError
+  end
+
+  def credit_card
+    super || raise NoCreditCardError
+  end
+end
+
+Account.find_each do |account|
+  begin
+    account.charge_for_subscription
+  rescue NoCreditCardError => exception
+    Airbrake.notify(exception)
+  end
+end
+```
 
 ```ruby
 Account.find_each do |account|
@@ -92,6 +124,11 @@ class Account
   end
 end
 ```
+
+### Maybe Pattern -- this is a pattern for replacing, nil
+* Forces conditional logic
+* Avoid invalid scenarios
+* nils need individual handling
 
 ### Law of Demeter
 When we violate the law of demeter we are accessing something's state that is not part of your own object's state or arguments passed into a method.
@@ -116,5 +153,3 @@ class Account
 end
 ```
 However `nil` still bites you on the above because one of the models could be `nil`.
-
-
