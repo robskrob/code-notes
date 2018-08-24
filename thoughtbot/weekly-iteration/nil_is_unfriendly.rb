@@ -72,9 +72,30 @@ class Account
     if last_charge = subscription.last_charge
       "Charged #{last_charge.amount}" \
         "on #{last_charge.created_at}"
+    end
+  end
+end
+
+class Account
+  def status
+    if last_charge = subscription.last_charge
+      "Charged #{last_charge.amount}" \
+        "on #{last_charge.created_at}"
     else
       'Pending'
     end
+  end
+end
+
+class Account
+  def status
+    subscription.
+      last_charge.
+      map { |charge|
+        "Charged #{last_charge.amount}" \
+          "on #{last_charge.created_at}"
+    }.
+    unwrap_or('Pending')
   end
 end
 
@@ -99,17 +120,5 @@ class None
 
   def unwrap_or(default)
     default
-  end
-end
-
-class Account
-  def status
-    subscription.
-      last_charge.
-      map { |charge|
-        "Charged #{last_charge.amount}" \
-          "on #{last_charge.created_at}"
-    }
-    unwrap_or('Pending')
   end
 end

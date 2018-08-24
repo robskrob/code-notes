@@ -3,6 +3,11 @@
 
 - finished watching
 
+## nil is unfriendly -- three options to use instead of nil
+1. NullObject when `nil` is always handled the same way
+2. Exceptions when `nil` is always a bug
+3. Maybe when `nil` needs to be handled specially each time
+
 ## Why is Nil unfriendly?
 * if you chain a list of methods then you have to check for `nil` every step of the way which creates code that is hard to maintain.
 * `nil` adds no meanding. Does it mean, zero, unknown, invalid, bug, false ...?
