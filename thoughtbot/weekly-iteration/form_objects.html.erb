@@ -1,0 +1,33 @@
+<#-- Before refactor. No form object ->
+<h1>Sign up</h1>
+
+<%= simple_form_for @user do |form|%>
+  <div>
+    <%= form.input :email%>
+  </div>
+
+  <%= form.simple_form_for :company do |company_fields| %>
+    <%= company_fields.input :name, label "Company name"%>
+  <% end %>
+
+  <div>
+    <%= form.submit "Sign up"%>
+  </div>
+<% end %>
+
+<#-- Refactor with Form Object Signup ->
+<h1>Sign up</h1>
+
+<%= simple_form_for @signup do |form|%>
+  <div>
+    <%= form.input :user_email%>
+  </div>
+
+  <div>
+    <%= form.input :company_name%>
+  </div>
+
+  <div>
+    <%= form.submit "Sign up"%>
+  </div>
+<% end %>
