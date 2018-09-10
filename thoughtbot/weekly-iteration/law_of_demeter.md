@@ -11,6 +11,44 @@ Pick up from 00:06:30
 > 3. any objects it creates/instantiates
 > 4. its direct component objects
 
+```ruby
+# Obeying the Law of Demeter
+# 1. itself
+class User
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+  attr_reader :first_name, :last_name
+end
+
+# 2. its parameters
+class TaxCalculator
+  def tax(amount)
+    amount.to_f * @tax_rate
+  end
+end
+
+# 3. any objects it creates/instantiates
+class Order
+  def tax
+    tax_calculator = TaxCalculator.new
+    subtotal + tax_calculator.tax(subtotal)
+  end
+end
+
+# 4. its direct component objects
+class Order
+  def initialize(tax_calculator)
+    @tax_calculator = TaxCalculator.new
+  end
+
+  def tax
+    subtotal + @tax_calculator.tax(subtotal)
+  end
+end
+```
+
 The first 3 I understand. Number `4` can apply for instance to other collaborators of an object which are set via a constructor -- so any instance variables.
 
 When we follow the law of Demeter making changes in our system becomes easier. LOD is about how we manage dependencies.
