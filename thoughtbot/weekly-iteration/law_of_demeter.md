@@ -3,7 +3,7 @@
 
 - finished watching
 
-Pick up from 00:06:30
+Pick up from 00:10:44
 
 > A method of an object should invoke only the methods of the following kinds of objects:
 > 1. itself
@@ -101,4 +101,16 @@ end
 * Writing lots of delegators can cover up larger issues with domain model.
 * Use Law of Demeter violations as opportunities to review your dependencies.
 
-If you find yourself needing to reach through an object a lot then what you probably want is that object instead of the intermediary object.
+If you find yourself needing to reach through an object a lot then what you probably want is that object instead of the intermediary object. This is a sign that you should probably refactor your code such that you get the dependency directly -- and not just delegate through a bunch of intermediary objects to get what you want.
+
+### Don't fix violations. Fix actual problems.
+
+* Many delegate methods to the same object?
+* Delegate methods with prefix? `author_name`
+* Multiple prefixes? `account_plan_price`
+* "Fix" by assigning to instance variables?
+
+### Looks like LOD violations but are NOT:
+* Daisy chaining method calls on an object of the same type: 
+  * `user.should_receive(:save).once.and_return(true)`
+  * `users.select(&:active?).map(&:name)`
