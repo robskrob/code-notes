@@ -1,9 +1,7 @@
 # Law of Demeter (LOD)
 #thoughtbot
 
-- finished watching
-
-Pick up from 00:10:44
++ finished watching
 
 > A method of an object should invoke only the methods of the following kinds of objects:
 > 1. itself
@@ -111,6 +109,12 @@ If you find yourself needing to reach through an object a lot then what you prob
 * "Fix" by assigning to instance variables?
 
 ### Looks like LOD violations but are NOT:
-* Daisy chaining method calls on an object of the same type: 
+* Daisy chaining method calls on an object of the same type is permissible under LOD: 
   * `user.should_receive(:save).once.and_return(true)`
   * `users.select(&:active?).map(&:name)`
+  * `collection_name.singularize.classify.constantize`
+
+### Duplication
+* Every time you query your modeling graph, association after association like: `user.account.credit_card` -- you are adding one more place in your code where this dependency graph is rigid and hardcoded in your system. In this example `user.account.credit_card` now you need users to belong to an account, which belong to a credit card. Moreover if you change how users get credit cards then you have to find every single place where you assumed that dependency works that way and change it. This is painful.
+* Dependency and Relationship Management - you want to keep things as fluid as possible. You want to make sure as few places in the code as possible understand the relationships between the objects. Instead, your system should just work directly on the messages available to those objects.
+* You want to grow your system of objects that do not require a lot of context. You never want your software to only work in specific contexts like when users who have a accounts have credit cards -- `user.account.credit_card`.

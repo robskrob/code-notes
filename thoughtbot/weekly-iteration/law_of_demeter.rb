@@ -62,3 +62,24 @@ class Account
     coupon.discount(plan.price)
   end
 end
+
+class CreditCardsController < ApplicationController
+  def charge_for_plan
+    if current_user.account.plan.price
+      price = current_user.account.plan.price
+      current_user.account.credit_card.charge price
+    end
+  end
+end
+
+class User < ActiveRecord::Base
+  belongs_to :account
+end
+
+class Account < ActiveRecord::Base
+  belongs_to :plan
+end
+
+class CreditCard < ActiveRecord::Base
+  belongs_to :account
+end
