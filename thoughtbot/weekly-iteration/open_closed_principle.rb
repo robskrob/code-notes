@@ -43,3 +43,41 @@ class Printer
     send_to_printer(@item.printable_representation)
   end
 end
+
+# Disobeys OCP
+class Unsubscriber
+  def unsubscribe!
+    SubscriptionCanceller.new(user).process
+    CancellationNotifier.new(user).notify
+    CampfireNotifier.announce_sad_news(user)
+  end
+end
+
+# Follows OCP
+class UnsubscriptionCompositeObserver
+  def initialize(observers)
+    @observers = observers
+  end
+
+  def notify(user)
+    @observers.each do |observer|
+      observer.notify(user)
+    end
+  end
+end
+
+class Unsubscriber
+  def initialize(observer)
+    @observer = observer
+  end
+
+  def unsubscribe!(user)
+    observer.notify(user)
+  end
+end
+
+# Other wins:
+#   * Free extension point: order
+#   * Unsubscriber is ignorant of how many observers are involved
+#   * One place for handling failures, aggregations, etc
+#   * Can create nested structures of composites
