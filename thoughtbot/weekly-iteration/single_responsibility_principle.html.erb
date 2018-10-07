@@ -1,0 +1,16 @@
+<% if @account.invitations_remaining? %>
+  <p>
+    You have
+    <span class="count">
+      <%= @account.invitations_remaining%>
+    </span>
+    remaining.
+    <%= link_to 'Invite?', new_invitation_path %>
+  </p>
+<% else %>
+  <p>
+    You have no invitations remaining.
+    <%= link_to 'Upgrade?', edit_plan_path%>
+  </p>
+<% end %>
+
