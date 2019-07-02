@@ -4,7 +4,7 @@
 
 #thoughtbot
 
-- finished watching
++ finished watching
 
 start watching again from 00:12:00
 
