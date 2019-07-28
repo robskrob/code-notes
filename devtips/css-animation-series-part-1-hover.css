@@ -1,0 +1,22 @@
+body {
+  padding: 40px;
+}
+
+.box {
+  display: inline-block;
+  background: pink;
+  width: 200px;
+  height: 200px;
+  transition: transform 1s ease-in-out;
+}
+
+.trigger {
+  width: 200px;
+  height: 200px;
+  border: 20px solid #999;
+  background: #ddd;
+}
+
+.trigger:hover .box {
+  transform: translate(200px, 150px) rotate(20deg);
+}

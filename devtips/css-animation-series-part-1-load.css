@@ -1,0 +1,13 @@
+body {
+  padding: 40px;
+}
+
+.box {
+  display: inline-block;
+  background: pink;
+  width: 200px;
+  height: 200px;
+
+  transform: translate(200px, 150px) rotate(20deg);
+  transition: transform 1s ease-in-out;
+}
